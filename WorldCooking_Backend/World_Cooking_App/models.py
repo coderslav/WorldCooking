@@ -29,7 +29,8 @@ class Dish(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Ingredient Name')
     quantity = models.CharField(max_length=50, verbose_name='Ingredient Quantity')
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name='Dish of the Ingredient')
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name='Dish of the Ingredient',
+                             related_name='ingredients')
 
     def __str__(self):
         return self.name
