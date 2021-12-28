@@ -3,8 +3,8 @@ from World_Cooking_App.views import DishesViewSet
 from django.urls import path, include
 
 router = routers.DefaultRouter()
-router.register('api/v1/dishes', DishesViewSet, basename='dish')
+router.register('v1/dishes', DishesViewSet, basename='dish')
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
