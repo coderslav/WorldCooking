@@ -3,6 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Country Name')
+    img = models.ImageField(upload_to='static/images/flags', verbose_name='Flag of the Country')
 
     def __str__(self):
         return self.name
@@ -13,7 +14,7 @@ class Category(models.Model):
 
 class Dish(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Recipe Name')
-    image = models.ImageField(upload_to='static/images/', default='static/images/default_dish.jpg',
+    image = models.ImageField(upload_to='static/images/dishes', default='static/images/dishes/default_dish.jpg',
                               verbose_name='Picture of the Dish')
     recipe = models.TextField(verbose_name='Recipe of the Dish')
     servings = models.PositiveSmallIntegerField(default=1, verbose_name='Number of Servings')
