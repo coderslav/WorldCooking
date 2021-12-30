@@ -11,7 +11,7 @@ schema_view = get_schema_view(
       default_version='v1',
       description='API documentation for Dishes App',
       terms_of_service='https://www.google.com/policies/terms/',
-      contact=openapi.Contact(email="test@stest.local"),
+      contact=openapi.Contact(email="test@test.local"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
