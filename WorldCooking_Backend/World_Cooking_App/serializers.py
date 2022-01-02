@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, CharField
-from World_Cooking_App.models import Dish, Ingredient
+from World_Cooking_App.models import Dish, Ingredient, Category
 
 
 class IngredientsSerializer(ModelSerializer):
@@ -16,3 +16,9 @@ class DishesSerializer(ModelSerializer):
     class Meta:
         model = Dish
         fields = ['id', 'name', 'image', 'recipe', 'servings', 'category', 'ingredients']
+
+
+class CategoriesSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

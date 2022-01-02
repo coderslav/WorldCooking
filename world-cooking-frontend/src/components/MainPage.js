@@ -14,6 +14,12 @@ import Link from '@mui/material/Link';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import '../styles/GlobalStyles.css';
 import CountryDishes from './CountryDishes';
+import {useDispatch} from 'react-redux';
+import axios from 'axios';
+import {useEffect} from 'react';
+
+//Paste here your Backend baseURL path
+axios.defaults.baseURL = 'http://127.0.0.1:8000';
 
 function Copyright() {
     return (
@@ -28,6 +34,27 @@ function Copyright() {
             </Link>{' '}
         </Typography>
     );
+}
+
+function fetchCategories(dispatch) {
+    axios.get('/api/v1/categories/')
+        .then((response) => {
+            dispatch({type: 'RUN_FETCH_CATEGORIES', payload: response.data})
+            console.log('Фетч Категорий Запустился')
+
+        }).catch((err) => {
+        alert(err)
+    })
+}
+
+function fetchDishes(dispatch) {
+    axios.get('/api/v1/dishes/')
+        .then((response) => {
+            dispatch({type: 'RUN_FETCH_DISHES', payload: response.data})
+            console.log('Фетч Блюд Запустился')
+        }).catch((err) => {
+        alert(err)
+    })
 }
 
 const countries = [
@@ -81,6 +108,13 @@ const Main = (
 const theme = createTheme();
 
 export default function MainPage() {
+    const dispatch = useDispatch()
+
+    useEffect(()=>{
+        fetchCategories(dispatch);
+        fetchDishes(dispatch)
+    })
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline/>

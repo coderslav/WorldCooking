@@ -1,5 +1,5 @@
 from rest_framework import routers
-from World_Cooking_App.views import DishesViewSet
+from World_Cooking_App.views import DishesViewSet, CategoriesViewSet
 from django.urls import path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -20,6 +20,7 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 router.register('v1/dishes', DishesViewSet, basename='dish')
+router.register('v1/categories', CategoriesViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

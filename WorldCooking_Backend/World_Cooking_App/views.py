@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from World_Cooking_App.models import Dish
-from World_Cooking_App.serializers import DishesSerializer
+from World_Cooking_App.models import Dish, Category
+from World_Cooking_App.serializers import DishesSerializer, CategoriesSerializer
 
 
 class DishesViewSet(ReadOnlyModelViewSet):
@@ -15,4 +15,9 @@ class DishesViewSet(ReadOnlyModelViewSet):
                     return Dish.objects.filter(category__name='Ukraine')
         else:
             return Dish.objects.all()
+
+
+class CategoriesViewSet(ReadOnlyModelViewSet):
+    serializer_class = CategoriesSerializer
+    queryset = Category.objects.all()
 
