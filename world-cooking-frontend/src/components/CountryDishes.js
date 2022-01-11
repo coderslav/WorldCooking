@@ -7,7 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import Dish from './Dish';
 
 const dishes = [
     {
@@ -74,7 +73,7 @@ const DishesList = (
                     <Grid item key={card.id} xs={12} sm={6} md={4}>
                         <Link
                             color="inherit"
-                            href={window.location + card.name.toLowerCase()}
+                            href={window.location + '/' + card.id}
                             underline={'none'}
                         >
                             <Card
@@ -112,8 +111,7 @@ const DishesList = (
 );
 
 function CountryDishes() {
-    return <Dish />;
-    // DishesList
+    return DishesList
 }
 
 export default CountryDishes;
