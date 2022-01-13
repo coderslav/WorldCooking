@@ -7,40 +7,12 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 
-const dishes = [
-    {
-        id: 1,
-        name: 'Borsh',
-        img: 'https://vilkin.pro/wp-content/uploads/2018/12/borsh-s-kuricei-770x513.jpg',
-        recipe: 'lorem*5',
-        ingredients: 'lorem*5',
-        servings: 10,
-        country: 'Ukraine',
-        countryImg:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Ukraine_%28pantone_colors%29.svg/2880px-Flag_of_Ukraine_%28pantone_colors%29.svg.png',
-    },
-    {
-        id: 2,
-        name: 'Salo',
-        img: 'https://img.povar.ru/main/2b/fe/37/e6/salo_zasolennoe-627721.jpg',
-        recipe: 'lorem*5',
-        ingredients: 'lorem*5',
-        servings: 10,
-        country: 'Ukraine',
-    },
-    {
-        id: 3,
-        name: 'Papushki',
-        img: 'https://www.koolinar.ru/all_image/recipes/156/156984/recipe_839e76b1-854a-422c-a830-f48ff153972b_w450.jpg',
-        recipe: 'lorem*5',
-        ingredients: 'lorem*5',
-        servings: 10,
-        country: 'Ukraine',
-    },
-];
-
-const DishesList = (
+function CountryDishes(props) {
+    let params = useParams()
+    return props.categories && props.dishes ? (
     <>
         <Box
             sx={{
@@ -58,18 +30,18 @@ const DishesList = (
                 >
                     <CardMedia
                         component="img"
-                        image={dishes[0].countryImg}
-                        alt={`${dishes[0].country}`}
+                        image={props.categories.filter(el => el.name === params.country)[0].img_url}
+                        alt={params.country}
                         id={'CardMedia'}
                         sx={{pr: 3}}
                     />
-                    Ukraine
+                    {params.country}
                 </Typography>
             </Container>
         </Box>
         <Container maxWidth="lg">
             <Grid container spacing={4}>
-                {dishes.map((card) => (
+                {props.dishes.filter(el => el.category === params.country).map((card) => (
                     <Grid item key={card.id} xs={12} sm={6} md={4}>
                         <Link
                             color="inherit"
@@ -88,7 +60,7 @@ const DishesList = (
                                     sx={{
                                         pt: '20%',
                                     }}
-                                    image={card.img}
+                                    image={card.img_url}
                                     alt={`${card.name}`}
                                 />
                                 <CardContent sx={{flexGrow: 1}}>
@@ -108,10 +80,14 @@ const DishesList = (
             </Grid>
         </Container>
     </>
-);
-
-function CountryDishes() {
-    return DishesList
+): <h1>Loading...</h1>;
 }
 
-export default CountryDishes;
+function mapStateToProps(state) {
+    return {
+        categories: state.categories.data,
+        dishes: state.dishes.data
+    }
+}
+
+export default connect(mapStateToProps)(CountryDishes)

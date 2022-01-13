@@ -6,24 +6,12 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import {connect} from 'react-redux';
+import {useParams} from 'react-router-dom';
 
-const dish =
-    {
-        id: 1,
-        name: 'Borsh',
-        img: 'https://vilkin.pro/wp-content/uploads/2018/12/borsh-s-kuricei-770x513.jpg',
-        recipe: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae blanditiis deserunt\n' +
-            '                    dolores eius eligendi esse fugiat ipsa iusto labore magni quam quis quo quos repellat sapiente sequi\n' +
-            '                    voluptas, voluptates!',
-        ingredients: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid beatae blanditiis deserunt\n' +
-            '                    dolores eius eligendi esse fugiat ipsa iusto labore magni quam quis quo quos repellat sapiente sequi\n' +
-            '                    voluptas, voluptates!',
-        servings: 10,
-        country: 'Ukraine'
-    }
-
-function Dish() {
-    return (
+function Dish(props) {
+    let params = useParams()
+    return props.dishes ? (
         <>
             <Box
                 sx={{
@@ -33,35 +21,37 @@ function Dish() {
                 <Container maxWidth="sm">
                     <Typography
                         component="h1"
-                        variant="h1"
+                        variant="h2"
                         align="center"
                         color="text.primary"
                         fontWeight="normal"
                         gutterBottom
                     >
-                        {dish.name}
+                        {props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].name}
                     </Typography>
                     <Typography variant="h4" align="center" sx={{pb: 2}}>Ingredients
-                        ({`${dish.servings} servings`}):</Typography>
-                    <Typography variant="h6" align="justify" color="text.secondary" paragraph>
-                        {dish.ingredients}
+                        ({`${props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].servings} servings`}):</Typography>
+                    <Typography component={'span'} variant="h6" align="justify" color="text.secondary" paragraph>
+                        {props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].ingredients.map((el, i) => (
+                            <div key={i}><span><b>{el.name}</b></span>: <span><i>{el.quantity}</i></span></div>
+                        ))}
                     </Typography>
                 </Container>
             </Box>
-            <Container sx={{py: 5}} maxWidth="lg">
+            <Container sx={{py: 5}} maxWidth="md">
                 <Grid>
-                    <Grid item key={dish.id} md={12}>
+                    <Grid item key={props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].id} md={12}>
                         <Card
                             sx={{height: '100%', display: 'flex', flexDirection: 'column'}}
                         >
                             <CardMedia
                                 component="img"
-                                image={dish.img}
-                                alt={`${dish.name}`}
+                                image={props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].img_url}
+                                alt={props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].name}
                             />
                             <CardContent sx={{flexGrow: 1}}>
-                                <Typography gutterBottom variant="h5" component="h2" textAlign={'center'}>
-                                    {dish.recipe}
+                                <Typography gutterBottom variant="h5" component="h5" textAlign={'justify'}>
+                                    {props.dishes.filter(el => el.id === parseInt(params.dish_id))[0].recipe}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -69,7 +59,14 @@ function Dish() {
                 </Grid>
             </Container>
         </>
-    );
+    ) : <h1>Loading....</h1>;
 }
 
-export default Dish;
+function mapStateToProps(state) {
+    return {
+        categories: state.categories.data,
+        dishes: state.dishes.data
+    }
+}
+
+export default connect(mapStateToProps)(Dish)

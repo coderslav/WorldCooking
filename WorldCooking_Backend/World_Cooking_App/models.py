@@ -3,7 +3,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Country Name')
-    img = models.ImageField(upload_to='static/images/flags', verbose_name='Flag of the Country')
+    img_url = models.URLField(max_length=500, default='img_url', verbose_name='Image URL')
 
     def __str__(self):
         return self.name
@@ -14,8 +14,7 @@ class Category(models.Model):
 
 class Dish(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Recipe Name')
-    image = models.ImageField(upload_to='static/images/dishes', default='static/images/dishes/default_dish.jpg',
-                              verbose_name='Picture of the Dish')
+    img_url = models.URLField(max_length=500, default='img_url', verbose_name='Image URL')
     recipe = models.TextField(verbose_name='Recipe of the Dish')
     servings = models.PositiveSmallIntegerField(default=1, verbose_name='Number of Servings')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Category of the Dish')
@@ -28,7 +27,7 @@ class Dish(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=150, unique=True, verbose_name='Ingredient Name')
+    name = models.CharField(max_length=150, verbose_name='Ingredient Name')
     quantity = models.CharField(max_length=50, verbose_name='Ingredient Quantity')
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE, verbose_name='Dish of the Ingredient',
                              related_name='ingredients')
